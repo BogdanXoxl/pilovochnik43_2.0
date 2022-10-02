@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-eslint eslint --no-error-on-unmatched-pattern $(git diff main... --name-only --- "*.{js,jsx,ts,tsx}")
 npm run build
