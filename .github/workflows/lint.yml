@@ -1,4 +1,4 @@
-name: CI
+name: LINT
 
 on: 
   pull_request:
@@ -20,6 +20,8 @@ jobs:
       - run: npm ci
       #- run: npm run test
       - run: npm run build
+      - run: npm run lint
+      - run: npm run check-types
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -30,3 +32,15 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+          
+  send-message:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: send default message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "Test passed successfully"
+    
