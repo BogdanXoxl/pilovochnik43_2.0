@@ -1,8 +1,9 @@
 name: LINT
 
 on: 
+  push:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "test" ]  
  
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,21 +31,20 @@ jobs:
           key: node-modules-${{ hashFiles('package.json') }}
             
       - run: npm ci
-      - run: npm run test
       - run: npm run build
       - run: npm run lint
       - run: npm run check-types
       
+        
       - name: send default message
+        if: success()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            *1st line of your message with bold*
-            *2nd line of your message with bold, too*
-            Application: *Write something to be put inside your message*. The below lines still are part of your message.          
+          message: |         
             Branch: *${{ github.ref }}*
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
+            -- LINTING completed successfully
     
