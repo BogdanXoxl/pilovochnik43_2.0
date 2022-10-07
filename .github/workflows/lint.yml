@@ -35,9 +35,9 @@ jobs:
       - run: npm run lint
       - run: npm run check-types
       
-        
-      - name: send default message
-        if: success()
+     
+      - if: success()
+        name: send success message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -46,5 +46,16 @@ jobs:
             Branch: *${{ github.ref }}*
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
-            -- LINTING completed successfully
-    
+            --✅ LINTING completed successfully
+      - if: failure()
+        name: send error message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |         
+            Branch: *${{ github.ref }}*
+            Repository: *${{ github.repository }}*
+            Owner: *${{ github.repository_owner }}*
+            --❌ LINTING completed with errors
+
