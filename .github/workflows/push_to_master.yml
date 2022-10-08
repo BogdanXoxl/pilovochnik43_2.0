@@ -75,7 +75,6 @@ jobs:
           path: ./*
           key: ${{ github.sha }}
           
-      - run: npm ci
       - run: npm run lint
       - run: npm run check-types
       
