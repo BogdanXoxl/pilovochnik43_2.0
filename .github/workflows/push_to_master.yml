@@ -2,6 +2,9 @@ name: LINT
 
 on: 
   push:
+    branches: 
+      - main
+      - test
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -16,7 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3 
 
-          
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3.5.0
         with:
@@ -29,9 +31,6 @@ jobs:
             
       - run: npm ci
       - run: npm run build
-      - run: npm run lint
-      - run: npm run check-types
-      
      
       - if: success()
         name: send success message
@@ -43,7 +42,49 @@ jobs:
             Branch: *${{ github.ref }}*
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
+            --✅ BUILD completed successfully
+
+      - if: failure()
+        name: send error message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |         
+            Branch: *${{ github.ref }}*
+            Repository: *${{ github.repository }}*
+            Owner: *${{ github.repository_owner }}*
+            --❌ BUILD completed with errors
+  lint:
+    runs-on: ubuntu-latest
+    needs: [build]
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3 
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - run: npm run lint
+      - run: npm run check-types
+      
+      - if: success()
+        name: send success message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |         
+            Branch: *${{ github.ref }}*
+            Repository: *${{ github.repository }}*
+            Owner: *${{ github.repository_owner }}*
             --✅ LINTING completed successfully
+
       - if: failure()
         name: send error message
         uses: appleboy/telegram-action@master
@@ -55,4 +96,3 @@ jobs:
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
             --❌ LINTING completed with errors
-
