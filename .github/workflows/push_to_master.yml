@@ -17,7 +17,7 @@ jobs:
         node-version: [16.x]
     
     outputs:
-      message: ${{ steps.*.outputs.build_message }}
+      message: ${{ steps.set_message.outputs.build_message }}
 
     steps:
       - uses: actions/checkout@v3 
@@ -35,17 +35,19 @@ jobs:
       - run: npm ci
       - run: npm run build
      
-      - if: success()
-        id: set_success_message
+      - name: set success message
+        if: success()
         run: | 
-          echo "::set-output name=build_message::--✅ BUILD completed successfully"  
+          message="--✅ BUILD completed successfully"  
         
-      
-      - name: send error message
+      - name: set error message
         if: failure()
-        id: set_error_message
         run: | 
-          echo "::set-output name=build_message::--❌ BUILD completed with errors"  
+          message="--❌ BUILD completed with errors"  
+          
+      - id: set_message
+        run: |
+          echo "::set-output name=build_message::$message"
            
   lint:
     runs-on: ubuntu-latest
