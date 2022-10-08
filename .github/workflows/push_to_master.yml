@@ -136,7 +136,7 @@ jobs:
             Branch: *${{ github.ref }}*
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
-            --✅ LINTING completed successfully
+            --✅ TESTING completed successfully
 
       - if: failure()
         name: send error message
@@ -148,11 +148,11 @@ jobs:
             Branch: *${{ github.ref }}*
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
-            --❌ LINTING completed with errors
+            --❌ TESTING completed with errors
             
   send-mesage: 
     runs-on: ubuntu-latest
-    continue-on-error: true
+    if: ${{ always() }}
     needs: [build, lint, test]
   
     steps:
