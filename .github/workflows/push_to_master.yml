@@ -152,6 +152,7 @@ jobs:
             
   send-mesage: 
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs: [build, lint, test]
   
     steps:
