@@ -32,8 +32,8 @@ jobs:
       - run: npm ci
       - run: npm run build
      
-      - if: success()
-        name: send success message
+      - name: send message
+        if: success()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -45,7 +45,6 @@ jobs:
             --✅ BUILD completed successfully
 
       - if: failure()
-        name: send error message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -101,3 +100,26 @@ jobs:
             Repository: *${{ github.repository }}*
             Owner: *${{ github.repository_owner }}*
             --❌ LINTING completed with errors
+
+  test: 
+    runs-on: ubuntu-latest
+    needs: [build]
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+          
+      - run: echo Hello world! Here will be placed my tests
+      - run: npm run test
