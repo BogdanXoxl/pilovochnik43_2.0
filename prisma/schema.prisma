@@ -79,12 +79,14 @@ model Tag {
 }
 
 model Category {
-  id        String   @id @default(cuid())
-  title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  products  Product? @relation(fields: [productId], references: [id])
-  productId String?
+  id              String   @id @default(cuid())
+  title           String
+  seo_title       String?
+  seo_description String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  products        Product? @relation(fields: [productId], references: [id])
+  productId       String?
 }
 
 model Status {
@@ -107,20 +109,22 @@ model DeliveryType {
 }
 
 model Product {
-  id          String         @id @default(cuid())
-  title       String
-  description String
-  sizes       String[]
-  discount    Int?
-  price       Float          @default(0)
-  images      Image[]
-  tags        Tag[]
-  categories  Category[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  reviews     Review[]
-  delivery    DeliveryType[]
-  history     ProductOrder[]
+  id              String         @id @default(cuid())
+  title           String
+  description     String
+  seo_title       String?
+  seo_description String?
+  sizes           String[]
+  discount        Int?
+  price           Float          @default(0)
+  images          Image[]
+  tags            Tag[]
+  categories      Category[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  reviews         Review[]
+  delivery        DeliveryType[]
+  history         ProductOrder[]
 }
 
 model Review {
