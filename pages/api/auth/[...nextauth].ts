@@ -12,4 +12,9 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.SECRET,
+  session: {
+    strategy: "database",
+  },
+  debug: process.env.NODE_ENV === "development",
 });

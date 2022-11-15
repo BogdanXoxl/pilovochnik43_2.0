@@ -41,6 +41,7 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "no-return-await": "off",
         "jsx-a11y/anchor-is-valid": "off", // Next.js uses its own internal link system
         "react/require-default-props": "off", // Allow non-defined react props as undefined
         "react/jsx-props-no-spreading": "off", // _app.tsx uses spread operator and also, react-hook-form
