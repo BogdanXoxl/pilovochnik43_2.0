@@ -21,18 +21,39 @@ export const ProductsFilterType = inputObjectType({
 export const Query = objectType({
   name: "Query",
   definition(t) {
-    // me
-    // t.field("me", {
-    //   type: "User",
-    //   args: {
-    //     userId: nonNull(stringArg()),
-    //   },
-    //   resolve: (_parent, { userId }, ctx) => {
-    //     return ctx.prisma.user.findUnique({
-    //       where: { id: userId },
-    //     });
-    //   },
-    // });
+    t.list.field("tags", {
+      type: "Tag",
+      args: {
+        sort: "SortOrder",
+      },
+      resolve: async (_parent, { sort }, ctx) =>
+        ctx.prisma.tag.findMany({
+          ...(sort && {
+            orderBy: {
+              products: {
+                _count: sort,
+              },
+            },
+          }),
+        }),
+    });
+
+    t.list.field("categories", {
+      type: "Category",
+      args: {
+        sort: "SortOrder",
+      },
+      resolve: async (_parent, { sort }, ctx) =>
+        ctx.prisma.category.findMany({
+          ...(sort && {
+            orderBy: {
+              products: {
+                _count: sort,
+              },
+            },
+          }),
+        }),
+    });
 
     t.list.field("products", {
       type: "Product",

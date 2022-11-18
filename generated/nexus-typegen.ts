@@ -266,8 +266,10 @@ export interface NexusGenFieldTypes {
   };
   Query: {
     // field return type
+    categories: Array<NexusGenRootTypes["Category"] | null> | null; // [Category]
     product: NexusGenRootTypes["Product"] | null; // Product
     products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
+    tags: Array<NexusGenRootTypes["Tag"] | null> | null; // [Tag]
   };
   Review: {
     // field return type
@@ -399,8 +401,10 @@ export interface NexusGenFieldTypeNames {
   };
   Query: {
     // field return type name
+    categories: "Category";
     product: "Product";
     products: "Product";
+    tags: "Tag";
   };
   Review: {
     // field return type name
@@ -451,6 +455,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Query: {
+    categories: {
+      // args
+      sort?: NexusGenEnums["SortOrder"] | null; // SortOrder
+    };
     product: {
       // args
       productId: string; // String!
@@ -461,6 +469,10 @@ export interface NexusGenArgTypes {
       discount?: boolean | null; // Boolean
       filters?: NexusGenInputs["ProductsFilterType"] | null; // ProductsFilterType
       tags?: Array<string | null> | null; // [String]
+    };
+    tags: {
+      // args
+      sort?: NexusGenEnums["SortOrder"] | null; // SortOrder
     };
   };
 }

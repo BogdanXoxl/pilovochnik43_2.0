@@ -97,6 +97,7 @@ input ProductsFilterType {
 }
 
 type Query {
+  categories(sort: SortOrder): [Category]
   product(productId: String!): Product
   products(
     category_id: String
@@ -104,6 +105,7 @@ type Query {
     filters: ProductsFilterType
     tags: [String]
   ): [Product]
+  tags(sort: SortOrder): [Tag]
 }
 
 type Review {
