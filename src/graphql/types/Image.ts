@@ -11,17 +11,7 @@ export const Image = objectType({
     t.string("id");
     t.string("link");
     t.field("type", { type: ImageType });
-    t.string("productId");
     t.date("createdAt");
     t.date("updatedAt");
-
-    t.field("product", {
-      type: "Product",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.product.findUnique({
-          where: { id: parent.productId },
-        });
-      },
-    });
   },
 });

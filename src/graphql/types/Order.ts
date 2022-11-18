@@ -4,9 +4,6 @@ export const Order = objectType({
   name: "Order",
   definition(t) {
     t.string("id");
-
-    t.string("userId");
-    t.string("statusId");
     t.string("deliveryTypeId");
     t.float("summary");
 

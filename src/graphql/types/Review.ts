@@ -5,10 +5,7 @@ export const Review = objectType({
   definition(t) {
     t.string("id");
     t.string("text");
-
     t.int("rate");
-    t.string("userId");
-    t.string("productId");
 
     t.field("user", {
       type: "User",
@@ -18,17 +15,6 @@ export const Review = objectType({
             where: { id: parent.id },
           })
           .user();
-      },
-    });
-
-    t.field("product", {
-      type: "Product",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.review
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .product();
       },
     });
 

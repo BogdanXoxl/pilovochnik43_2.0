@@ -40,10 +40,18 @@ declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
-export interface NexusGenInputs {}
+export interface NexusGenInputs {
+  ProductsFilterType: {
+    // input type
+    field: NexusGenEnums["SortOrderField"]; // SortOrderField!
+    sort?: NexusGenEnums["SortOrder"] | null; // SortOrder
+  };
+}
 
 export interface NexusGenEnums {
   ImageType: "PHOTO" | "VIDEO";
+  SortOrder: "asc" | "desc";
+  SortOrderField: "orders" | "price";
 }
 
 export interface NexusGenScalars {
@@ -73,13 +81,10 @@ export interface NexusGenObjects {
   };
   Category: {
     // root type
-    createdAt?: NexusGenScalars["DateTime"] | null; // DateTime
     id?: string | null; // String
-    productId?: string | null; // String
     seo_description?: string | null; // String
     seo_title?: string | null; // String
     title?: string | null; // String
-    updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
   };
   DeliveryType: {
     // root type
@@ -93,7 +98,6 @@ export interface NexusGenObjects {
     createdAt?: NexusGenScalars["DateTime"] | null; // DateTime
     id?: string | null; // String
     link?: string | null; // String
-    productId?: string | null; // String
     type?: NexusGenEnums["ImageType"] | null; // ImageType
     updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
   };
@@ -102,22 +106,25 @@ export interface NexusGenObjects {
     createdAt?: NexusGenScalars["DateTime"] | null; // DateTime
     deliveryTypeId?: string | null; // String
     id?: string | null; // String
-    statusId?: string | null; // String
     summary?: number | null; // Float
     updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
-    userId?: string | null; // String
   };
   Product: {
     // root type
+    category?: NexusGenRootTypes["Category"] | null; // Category
     createdAt?: NexusGenScalars["DateTime"] | null; // DateTime
+    delivery?: Array<NexusGenRootTypes["DeliveryType"] | null> | null; // [DeliveryType]
     description?: string | null; // String
     discount?: number | null; // Int
     id?: string | null; // String
+    images?: Array<NexusGenRootTypes["Image"] | null> | null; // [Image]
     price?: number | null; // Float
+    reviews?: Array<NexusGenRootTypes["Review"] | null> | null; // [Review]
     seo_description?: string | null; // String
     seo_title?: string | null; // String
     sizes?: Array<string | null> | null; // [String]
     slug?: string | null; // String
+    tags?: Array<NexusGenRootTypes["Tag"] | null> | null; // [Tag]
     title?: string | null; // String
     updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
   };
@@ -125,20 +132,16 @@ export interface NexusGenObjects {
     // root type
     amount?: number | null; // Int
     id?: string | null; // String
-    orderId?: string | null; // String
     price?: number | null; // Float
-    productId?: string | null; // String
   };
   Query: {};
   Review: {
     // root type
     createdAt?: NexusGenScalars["DateTime"] | null; // DateTime
     id?: string | null; // String
-    productId?: string | null; // String
     rate?: number | null; // Int
     text?: string | null; // String
     updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
-    userId?: string | null; // String
   };
   Session: {
     // root type
@@ -199,22 +202,16 @@ export interface NexusGenFieldTypes {
   };
   Category: {
     // field return type
-    createdAt: NexusGenScalars["DateTime"] | null; // DateTime
     id: string | null; // String
-    productId: string | null; // String
-    products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
     seo_description: string | null; // String
     seo_title: string | null; // String
     title: string | null; // String
-    updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
   };
   DeliveryType: {
     // field return type
     howLong: string | null; // String
     id: string | null; // String
-    orders: Array<NexusGenRootTypes["Order"] | null> | null; // [Order]
     price: number | null; // Float
-    products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
     title: string | null; // String
   };
   Image: {
@@ -222,8 +219,6 @@ export interface NexusGenFieldTypes {
     createdAt: NexusGenScalars["DateTime"] | null; // DateTime
     id: string | null; // String
     link: string | null; // String
-    product: NexusGenRootTypes["Product"] | null; // Product
-    productId: string | null; // String
     type: NexusGenEnums["ImageType"] | null; // ImageType
     updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
   };
@@ -235,15 +230,13 @@ export interface NexusGenFieldTypes {
     id: string | null; // String
     products: Array<NexusGenRootTypes["ProductOrder"] | null> | null; // [ProductOrder]
     status: NexusGenRootTypes["Status"] | null; // Status
-    statusId: string | null; // String
     summary: number | null; // Float
     updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
     user: NexusGenRootTypes["User"] | null; // User
-    userId: string | null; // String
   };
   Product: {
     // field return type
-    categories: Array<NexusGenRootTypes["Category"] | null> | null; // [Category]
+    category: NexusGenRootTypes["Category"] | null; // Category
     createdAt: NexusGenScalars["DateTime"] | null; // DateTime
     delivery: Array<NexusGenRootTypes["DeliveryType"] | null> | null; // [DeliveryType]
     description: string | null; // String
@@ -254,6 +247,7 @@ export interface NexusGenFieldTypes {
     price: number | null; // Float
     rating: number | null; // Float
     reviews: Array<NexusGenRootTypes["Review"] | null> | null; // [Review]
+    reviews_count: number | null; // Int
     seo_description: string | null; // String
     seo_title: string | null; // String
     sizes: Array<string | null> | null; // [String]
@@ -267,10 +261,8 @@ export interface NexusGenFieldTypes {
     amount: number | null; // Int
     id: string | null; // String
     order: NexusGenRootTypes["Order"] | null; // Order
-    orderId: string | null; // String
     price: number | null; // Float
     product: NexusGenRootTypes["Product"] | null; // Product
-    productId: string | null; // String
   };
   Query: {
     // field return type
@@ -281,13 +273,10 @@ export interface NexusGenFieldTypes {
     // field return type
     createdAt: NexusGenScalars["DateTime"] | null; // DateTime
     id: string | null; // String
-    product: NexusGenRootTypes["Product"] | null; // Product
-    productId: string | null; // String
     rate: number | null; // Int
     text: string | null; // String
     updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
     user: NexusGenRootTypes["User"] | null; // User
-    userId: string | null; // String
   };
   Session: {
     // field return type
@@ -310,7 +299,6 @@ export interface NexusGenFieldTypes {
     // field return type
     createdAt: NexusGenScalars["DateTime"] | null; // DateTime
     id: string | null; // String
-    products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
     title: string | null; // String
     updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
   };
@@ -347,22 +335,16 @@ export interface NexusGenFieldTypeNames {
   };
   Category: {
     // field return type name
-    createdAt: "DateTime";
     id: "String";
-    productId: "String";
-    products: "Product";
     seo_description: "String";
     seo_title: "String";
     title: "String";
-    updatedAt: "DateTime";
   };
   DeliveryType: {
     // field return type name
     howLong: "String";
     id: "String";
-    orders: "Order";
     price: "Float";
-    products: "Product";
     title: "String";
   };
   Image: {
@@ -370,8 +352,6 @@ export interface NexusGenFieldTypeNames {
     createdAt: "DateTime";
     id: "String";
     link: "String";
-    product: "Product";
-    productId: "String";
     type: "ImageType";
     updatedAt: "DateTime";
   };
@@ -383,15 +363,13 @@ export interface NexusGenFieldTypeNames {
     id: "String";
     products: "ProductOrder";
     status: "Status";
-    statusId: "String";
     summary: "Float";
     updatedAt: "DateTime";
     user: "User";
-    userId: "String";
   };
   Product: {
     // field return type name
-    categories: "Category";
+    category: "Category";
     createdAt: "DateTime";
     delivery: "DeliveryType";
     description: "String";
@@ -402,6 +380,7 @@ export interface NexusGenFieldTypeNames {
     price: "Float";
     rating: "Float";
     reviews: "Review";
+    reviews_count: "Int";
     seo_description: "String";
     seo_title: "String";
     sizes: "String";
@@ -415,10 +394,8 @@ export interface NexusGenFieldTypeNames {
     amount: "Int";
     id: "String";
     order: "Order";
-    orderId: "String";
     price: "Float";
     product: "Product";
-    productId: "String";
   };
   Query: {
     // field return type name
@@ -429,13 +406,10 @@ export interface NexusGenFieldTypeNames {
     // field return type name
     createdAt: "DateTime";
     id: "String";
-    product: "Product";
-    productId: "String";
     rate: "Int";
     text: "String";
     updatedAt: "DateTime";
     user: "User";
-    userId: "String";
   };
   Session: {
     // field return type name
@@ -458,7 +432,6 @@ export interface NexusGenFieldTypeNames {
     // field return type name
     createdAt: "DateTime";
     id: "String";
-    products: "Product";
     title: "String";
     updatedAt: "DateTime";
   };
@@ -482,6 +455,13 @@ export interface NexusGenArgTypes {
       // args
       productId: string; // String!
     };
+    products: {
+      // args
+      category_id?: string | null; // String
+      discount?: boolean | null; // Boolean
+      filters?: NexusGenInputs["ProductsFilterType"] | null; // ProductsFilterType
+      tags?: Array<string | null> | null; // [String]
+    };
   };
 }
 
@@ -491,7 +471,7 @@ export interface NexusGenTypeInterfaces {}
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = keyof NexusGenEnums;
 

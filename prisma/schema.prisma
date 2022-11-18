@@ -71,7 +71,7 @@ model Image {
 
 model Tag {
   id        String    @id @default(cuid())
-  title     String
+  title     String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   products  Product[]
@@ -79,7 +79,7 @@ model Tag {
 
 model Category {
   id              String    @id @default(cuid())
-  title           String
+  title           String    @unique
   seo_title       String?
   seo_description String?
   createdAt       DateTime  @default(now())
@@ -106,24 +106,27 @@ model DeliveryType {
 }
 
 model Product {
-  id              String         @id @default(cuid())
+  id              String   @id @default(cuid())
   title           String
-  slug            String
+  slug            String   @unique
   description     String
   seo_title       String?
   seo_description String?
   sizes           String[]
   discount        Int?
-  price           Float          @default(0)
-  hide            Boolean        @default(false)
-  images          Image[]
-  tags            Tag[]
-  categories      Category[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  reviews         Review[]
-  delivery        DeliveryType[]
-  history         ProductOrder[]
+  price           Float    @default(0)
+  hide            Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images     Image[]
+  tags       Tag[]
+  reviews    Review[]
+  delivery   DeliveryType[]
+  history    ProductOrder[]
+  category   Category?      @relation(fields: [categoryId], references: [id])
+  categoryId String?
 }
 
 model Review {

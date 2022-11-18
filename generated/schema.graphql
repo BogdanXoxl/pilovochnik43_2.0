@@ -18,14 +18,10 @@ type Account {
 }
 
 type Category {
-  createdAt: DateTime
   id: String
-  productId: String
-  products: [Product]
   seo_description: String
   seo_title: String
   title: String
-  updatedAt: DateTime
 }
 
 """
@@ -36,9 +32,7 @@ scalar DateTime
 type DeliveryType {
   howLong: String
   id: String
-  orders: [Order]
   price: Float
-  products: [Product]
   title: String
 }
 
@@ -46,8 +40,6 @@ type Image {
   createdAt: DateTime
   id: String
   link: String
-  product: Product
-  productId: String
   type: ImageType
   updatedAt: DateTime
 }
@@ -64,15 +56,13 @@ type Order {
   id: String
   products: [ProductOrder]
   status: Status
-  statusId: String
   summary: Float
   updatedAt: DateTime
   user: User
-  userId: String
 }
 
 type Product {
-  categories: [Category]
+  category: Category
   createdAt: DateTime
   delivery: [DeliveryType]
   description: String
@@ -83,6 +73,7 @@ type Product {
   price: Float
   rating: Float
   reviews: [Review]
+  reviews_count: Int
   seo_description: String
   seo_title: String
   sizes: [String]
@@ -96,27 +87,32 @@ type ProductOrder {
   amount: Int
   id: String
   order: Order
-  orderId: String
   price: Float
   product: Product
-  productId: String
+}
+
+input ProductsFilterType {
+  field: SortOrderField!
+  sort: SortOrder
 }
 
 type Query {
   product(productId: String!): Product
-  products: [Product]
+  products(
+    category_id: String
+    discount: Boolean
+    filters: ProductsFilterType
+    tags: [String]
+  ): [Product]
 }
 
 type Review {
   createdAt: DateTime
   id: String
-  product: Product
-  productId: String
   rate: Int
   text: String
   updatedAt: DateTime
   user: User
-  userId: String
 }
 
 type Session {
@@ -125,6 +121,16 @@ type Session {
   sessionToken: String
   user: User
   userId: String
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+enum SortOrderField {
+  orders
+  price
 }
 
 type Status {
@@ -139,7 +145,6 @@ type Status {
 type Tag {
   createdAt: DateTime
   id: String
-  products: [Product]
   title: String
   updatedAt: DateTime
 }

@@ -13,15 +13,14 @@ export const Product = objectType({
     t.nullable.int("discount");
     t.float("price");
 
-    t.list.field("images", {
-      type: "Image",
-      resolve: async (parent, _args, ctx) =>
-        ctx.prisma.image.findMany({
-          where: {
-            productId: parent.id,
-          },
-        }),
-    });
+    t.field("category", { type: "Category" });
+    t.list.field("tags", { type: "Tag" });
+    t.list.field("images", { type: "Image" });
+    t.list.field("reviews", { type: "Review" });
+    t.list.field("delivery", { type: "DeliveryType" });
+
+    t.date("createdAt");
+    t.date("updatedAt");
 
     t.float("rating", {
       resolve: async (parent, _args, ctx) => {
@@ -48,55 +47,13 @@ export const Product = objectType({
         }),
     });
 
-    t.list.field("tags", {
-      type: "Tag",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.product
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .tags({
-            include: {
-              products: true,
-            },
-          });
-      },
+    t.nullable.int("reviews_count", {
+      resolve: async (parent, _args, ctx) =>
+        ctx.prisma.review.count({
+          where: {
+            productId: parent.id,
+          },
+        }),
     });
-
-    t.list.field("categories", {
-      type: "Category",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.product
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .categories();
-      },
-    });
-
-    t.list.field("reviews", {
-      type: "Review",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.product
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .reviews();
-      },
-    });
-
-    t.list.field("delivery", {
-      type: "DeliveryType",
-      async resolve(parent, _args, ctx) {
-        return ctx.prisma.product
-          .findUnique({
-            where: { id: parent.id },
-          })
-          .delivery();
-      },
-    });
-
-    t.date("createdAt");
-    t.date("updatedAt");
   },
 });

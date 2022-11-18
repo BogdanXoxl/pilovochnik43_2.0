@@ -6,7 +6,7 @@ export { Image, ImageType } from "./Image";
 export { Order } from "./Order";
 export { Product } from "./Product";
 export { ProductOrder } from "./ProductOrder";
-export { Query } from "./Query";
+export { ProductsFilterType, Query, SortOrder, SortOrderField } from "./Query";
 export { Review } from "./Review";
 export { Session } from "./Session";
 export { Status } from "./Status";

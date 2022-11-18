@@ -7,9 +7,6 @@ export const ProductOrder = objectType({
     t.float("price");
     t.int("amount");
 
-    t.string("orderId");
-    t.string("productId");
-
     t.field("product", {
       type: "Product",
       async resolve(parent, _args, ctx) {
