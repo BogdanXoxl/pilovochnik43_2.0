@@ -8,6 +8,9 @@ const nextConfig = withBundleAnalyzer({
   reactStrictMode: true,
   swcMinify: true,
   poweredByHeader: false,
+  experimental: {
+    appDir: true,
+  },
 });
 
 module.exports = nextConfig;

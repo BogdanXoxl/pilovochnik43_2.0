@@ -49,6 +49,16 @@ enum ImageType {
   VIDEO
 }
 
+type Mutation {
+  createReview(productId: ID!, rate: Int!, text: String!): MutationResponse
+}
+
+type MutationResponse {
+  message: String
+  response: Review
+  success: Boolean
+}
+
 type Order {
   createdAt: DateTime
   delivery: DeliveryType
@@ -97,7 +107,6 @@ input ProductsFilterType {
 }
 
 type Query {
-  categories(sort: SortOrder): [Category]
   product(productId: String!): Product
   products(
     category_id: String

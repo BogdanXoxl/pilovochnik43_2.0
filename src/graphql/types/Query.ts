@@ -38,22 +38,22 @@ export const Query = objectType({
         }),
     });
 
-    t.list.field("categories", {
-      type: "Category",
-      args: {
-        sort: "SortOrder",
-      },
-      resolve: async (_parent, { sort }, ctx) =>
-        ctx.prisma.category.findMany({
-          ...(sort && {
-            orderBy: {
-              products: {
-                _count: sort,
-              },
-            },
-          }),
-        }),
-    });
+    // t.list.field("categories", {
+    //   type: "Category",
+    //   args: {
+    //     sort: "SortOrder",
+    //   },
+    //   resolve: async (_parent, { sort }, ctx) =>
+    //     ctx.prisma.category.findMany({
+    //       ...(sort && {
+    //         orderBy: {
+    //           products: {
+    //             _count: sort,
+    //           },
+    //         },
+    //       }),
+    //     }),
+    // });
 
     t.list.field("products", {
       type: "Product",
@@ -61,7 +61,7 @@ export const Query = objectType({
         filters: ProductsFilterType,
         tags: list("String"),
         discount: "Boolean",
-        category_id: "String",
+        category_id: "String", // TODO:: categoryName
       },
       resolve: async (_parent, args, ctx) => {
         let obj: any;

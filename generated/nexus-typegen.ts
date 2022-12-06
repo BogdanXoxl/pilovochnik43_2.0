@@ -4,6 +4,8 @@
  */
 
 import type { core, connectionPluginCore } from "nexus";
+import type { ValidateResolver } from "nexus-validate";
+import type { FieldShieldResolver, ObjectTypeShieldResolver } from "nexus-shield";
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
     /**
@@ -100,6 +102,13 @@ export interface NexusGenObjects {
     link?: string | null; // String
     type?: NexusGenEnums["ImageType"] | null; // ImageType
     updatedAt?: NexusGenScalars["DateTime"] | null; // DateTime
+  };
+  Mutation: {};
+  MutationResponse: {
+    // root type
+    message?: string | null; // String
+    response?: NexusGenRootTypes["Review"] | null; // Review
+    success?: boolean | null; // Boolean
   };
   Order: {
     // root type
@@ -222,6 +231,16 @@ export interface NexusGenFieldTypes {
     type: NexusGenEnums["ImageType"] | null; // ImageType
     updatedAt: NexusGenScalars["DateTime"] | null; // DateTime
   };
+  Mutation: {
+    // field return type
+    createReview: NexusGenRootTypes["MutationResponse"] | null; // MutationResponse
+  };
+  MutationResponse: {
+    // field return type
+    message: string | null; // String
+    response: NexusGenRootTypes["Review"] | null; // Review
+    success: boolean | null; // Boolean
+  };
   Order: {
     // field return type
     createdAt: NexusGenScalars["DateTime"] | null; // DateTime
@@ -266,7 +285,6 @@ export interface NexusGenFieldTypes {
   };
   Query: {
     // field return type
-    categories: Array<NexusGenRootTypes["Category"] | null> | null; // [Category]
     product: NexusGenRootTypes["Product"] | null; // Product
     products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
     tags: Array<NexusGenRootTypes["Tag"] | null> | null; // [Tag]
@@ -357,6 +375,16 @@ export interface NexusGenFieldTypeNames {
     type: "ImageType";
     updatedAt: "DateTime";
   };
+  Mutation: {
+    // field return type name
+    createReview: "MutationResponse";
+  };
+  MutationResponse: {
+    // field return type name
+    message: "String";
+    response: "Review";
+    success: "Boolean";
+  };
   Order: {
     // field return type name
     createdAt: "DateTime";
@@ -401,7 +429,6 @@ export interface NexusGenFieldTypeNames {
   };
   Query: {
     // field return type name
-    categories: "Category";
     product: "Product";
     products: "Product";
     tags: "Tag";
@@ -454,11 +481,15 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
-  Query: {
-    categories: {
+  Mutation: {
+    createReview: {
       // args
-      sort?: NexusGenEnums["SortOrder"] | null; // SortOrder
+      productId: string; // ID!
+      rate: number; // Int!
+      text: string; // String!
     };
+  };
+  Query: {
     product: {
       // args
       productId: string; // String!
@@ -540,9 +571,23 @@ export interface NexusGenTypes {
 }
 
 declare global {
-  interface NexusGenPluginTypeConfig<TypeName extends string> {}
+  interface NexusGenPluginTypeConfig<TypeName extends string> {
+    /**
+     * Default authorization rule to execute on all fields of this object
+     */
+    shield?: ObjectTypeShieldResolver<TypeName>;
+  }
   interface NexusGenPluginInputTypeConfig<TypeName extends string> {}
-  interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {}
+  interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    /**
+     * Validate mutation arguments.
+     */
+    validate?: ValidateResolver<TypeName, FieldName>;
+    /**
+     * Authorization rule to execute for this field
+     */
+    shield?: FieldShieldResolver<TypeName, FieldName>;
+  }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {}
   interface NexusGenPluginSchemaConfig {}
   interface NexusGenPluginArgConfig {}

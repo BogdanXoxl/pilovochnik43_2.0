@@ -3,6 +3,7 @@ export { Category } from "./Category";
 export { DeliveryType } from "./DeliveryType";
 export { GQLDate } from "./GQLDate";
 export { Image, ImageType } from "./Image";
+export { MutationResponse, ReviewMutationResponse, ReviewMutations } from "./Mutations";
 export { Order } from "./Order";
 export { Product } from "./Product";
 export { ProductOrder } from "./ProductOrder";
