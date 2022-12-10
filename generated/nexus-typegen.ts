@@ -286,8 +286,8 @@ export interface NexusGenFieldTypes {
   Query: {
     // field return type
     product: NexusGenRootTypes["Product"] | null; // Product
-    products: Array<NexusGenRootTypes["Product"] | null> | null; // [Product]
-    tags: Array<NexusGenRootTypes["Tag"] | null> | null; // [Tag]
+    products: NexusGenRootTypes["Product"][] | null; // [Product!]
+    tags: NexusGenRootTypes["Tag"][] | null; // [Tag!]
   };
   Review: {
     // field return type

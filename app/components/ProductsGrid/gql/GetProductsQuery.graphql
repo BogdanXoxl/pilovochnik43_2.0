@@ -1,0 +1,23 @@
+query GetProductsQuery(
+  $discount: Boolean
+  $tags: [String]
+  $filters: ProductsFilterType
+  $categoryId: String
+) {
+  products(discount: $discount, tags: $tags, filters: $filters, category_id: $categoryId) {
+    id
+    slug
+    title
+    price
+    discount
+    rating
+    reviews_count
+    images {
+      link
+    }
+    category {
+      title
+      id
+    }
+  }
+}

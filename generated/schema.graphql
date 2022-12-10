@@ -113,8 +113,8 @@ type Query {
     discount: Boolean
     filters: ProductsFilterType
     tags: [String]
-  ): [Product]
-  tags(sort: SortOrder): [Tag]
+  ): [Product!]
+  tags(sort: SortOrder): [Tag!]
 }
 
 type Review {

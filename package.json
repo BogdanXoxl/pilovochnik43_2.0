@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run watch",
+    "watch": "npm run clear && concurrently -k npm:watch-codegen npm:watch-nextjs",
+    "watch-nextjs": "next",
+    "watch-codegen": "graphql-codegen --watch",
     "build": "next build",
     "start": "next start",
     "analyze": "ANALYZE=true next build",
@@ -14,15 +17,18 @@
     "cypress:headless": "cypress run",
     "e2e": "start-server-and-test dev http://localhost:3000 cypress",
     "e2e:headless": "start-server-and-test dev http://localhost:3000 cypress:headless",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "clear": "echo 'add __generated__ clear' "
   },
   "dependencies": {
+    "@apollo/client": "^3.7.2",
     "@apollo/server": "^4.1.1",
     "@as-integrations/next": "^1.1.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@next/font": "^13.0.6",
     "@prisma/client": "^4.7.1",
     "clsx": "^1.2.1",
+    "deepmerge": "^4.2.2",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.20.1",
     "next": "^13.0.6",
@@ -38,6 +44,13 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.16.1",
+    "@graphql-codegen/client-preset": "^1.2.3",
+    "@graphql-codegen/near-operation-file-preset": "^2.4.4",
+    "@graphql-codegen/typescript": "^2.8.5",
+    "@graphql-codegen/typescript-operations": "^2.5.10",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-eslint/eslint-plugin": "^3.13.1",
     "@next/bundle-analyzer": "^12.3.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -46,6 +59,7 @@
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "autoprefixer": "^10.4.13",
+    "concurrently": "^7.6.0",
     "cypress": "^10.9.0",
     "eslint": "8.22.0",
     "eslint-config-airbnb": "^19.0.4",

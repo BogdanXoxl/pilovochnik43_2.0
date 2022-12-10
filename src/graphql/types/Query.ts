@@ -22,7 +22,7 @@ export const Query = objectType({
   name: "Query",
   definition(t) {
     t.list.field("tags", {
-      type: "Tag",
+      type: nonNull("Tag"),
       args: {
         sort: "SortOrder",
       },
@@ -56,7 +56,7 @@ export const Query = objectType({
     // });
 
     t.list.field("products", {
-      type: "Product",
+      type: nonNull("Product"),
       args: {
         filters: ProductsFilterType,
         tags: list("String"),

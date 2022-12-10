@@ -1,0 +1,35 @@
+schema:
+  - "./generated/schema.graphql"
+documents:
+  - "app/**/*.tsx"
+  - "app/**/*.graphql"
+generates:
+  "generated/__generated__/gql-codegen/types.ts":
+    plugins:
+      - typescript
+    config:
+      scalars:
+        Date: "string"
+  "app/":
+    preset: near-operation-file
+    presetConfig:
+      folder: __generated__
+      extension: .tsx
+      baseTypesPath: ../generated/__generated__/gql-codegen/types.ts
+    plugins:
+      - add:
+          content:
+            - "// NOTICE: __generated__ folders should be added to .gitignore"
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      documentMode: "documentNodeImportFragments"
+      namingConvention: keep
+      nonOptionalTypename: true
+      dedupeOperationSuffix: true
+      omitOperationSuffix: true
+      withComponent: false
+      withHooks: true
+      withHOC: false
+      reactApolloVersion: 3
+#      apolloReactHooksImportFrom: "lib/utils/extendApolloHooks"

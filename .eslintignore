@@ -2,3 +2,4 @@ node_modules
 .husky
 out
 generated
+__generated__/
