@@ -1,4 +1,5 @@
 import type { Tag } from "@prisma/client";
+import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 
 import { TagLink } from "./TagLink";
@@ -71,22 +72,17 @@ export const Tags = ({ tags, onChange }: Props) => {
               onClick={() => onClick(t)}
             />
           ))}
-      {lTags.length > 5 &&
-        (opened ? (
-          <li
-            onClick={() => setOpened(false)}
-            className="h-9 rounded py-1.5 px-5 border bg-warning text-white transition duration-100 ease-in-out cursor-pointer hover:bg-primary"
-          >
-            Скрыть
-          </li>
-        ) : (
-          <li
-            onClick={() => setOpened(true)}
-            className="h-9 rounded py-1.5 px-5 border bg-primary text-white transition duration-100 ease-in-out cursor-pointer hover:bg-warning"
-          >
-            Ещё
-          </li>
-        ))}
+      {lTags.length > 5 && (
+        <li
+          onClick={() => setOpened((prev) => !prev)}
+          className={clsx(
+            opened ? "bg-warning hover:bg-primary" : "bg-primary hover:bg-warning",
+            "h-9 rounded py-1.5 px-5 border text-white transition duration-100 ease-in-out cursor-pointer"
+          )}
+        >
+          {opened ? "Скрыть" : "Ещё"}
+        </li>
+      )}
     </ul>
   );
 };
